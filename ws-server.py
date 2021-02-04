@@ -1,14 +1,19 @@
 import asyncio
 import websockets
+import json
+
 
 async def run(websocket, path):
-    name = await websocket.recv()
-    print(f"< {name}")
+    json_str = await websocket.recv()
+    data = json.loads(json_str)
 
-    greeting = f"Hello {name}!"
+    # debug print
+    print(data['compiler'])
+    print(data['std'])
+    print(data['code'])
+    ###
 
-    await websocket.send(greeting)
-    print(f"> {greeting}")
+    code = data['code']
 
 start_server = websockets.serve(run, "localhost", 8080)
 
